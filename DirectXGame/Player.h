@@ -1,20 +1,31 @@
 #pragma once
-#include "KamataEngine.h"
+#include "PlayerBullet.h"
+#include <KamataEngine.h>
 using namespace KamataEngine;
+
+namespace KamataEngine { class Input; };
+
 
 class Player {
 public:
-	void Initialize(Model* model, uint32_t textureHandle, Camera* Camera);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos);
 	void Update();
 	void Draw();
+	~Player();
+
+	void Attack();
 
 private:
+	
 	WorldTransform worldtransfrom_;
 
 	Model* model_ = nullptr;
+
+	Input* input_ = nullptr;
 	
 	Camera* camera_ = nullptr;
 
-	uint32_t textureHandle_ = 0u;
+	// 弾
+	PlayerBullet* bullet_ = nullptr;
 
 };

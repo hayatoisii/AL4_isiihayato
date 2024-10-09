@@ -18,15 +18,16 @@ private:
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	// KamataEngine::
-	uint32_t textureHandle_ = 0;
+	Player* player_ = nullptr;
+	Vector3 playerPos = {};
 
-	Sprite* sprite_ = nullptr;
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 
-	WorldTransform worldTransform_;
+	//std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	Camera camera_;
 
-	Player* player_ = nullptr;
+	bool isDebugCameraActive_ = false;
+	// デバックカメラ
+	DebugCamera* debugCamera_ = nullptr;
 
 };

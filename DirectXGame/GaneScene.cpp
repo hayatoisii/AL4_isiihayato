@@ -1,12 +1,13 @@
 #include "GaneScene.h"
 #include <cassert>
+#include "3d/AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete sprite_;
-	delete model_;
+	delete modelPlayer_;
 	delete player_;
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -15,23 +16,48 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	textureHandle_ = TextureManager::Load("sample.png");
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
-
+	player_ = new Player();
 	// 3Dモデルの生成
-	model_ = Model::Create();
+	modelPlayer_ = KamataEngine::Model::CreateFromOBJ("cube", true);
 
-	// ワールドトランスフォームの初期化
-	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
 	camera_.Initialize();
 
-	player_ = new Player();
-	player_->Initialize(model_, textureHandle_, &camera_);
+	//playerPos.z = 0; 
+	player_->Initialize(modelPlayer_, &camera_, playerPos);
+
+	debugCamera_ = new DebugCamera(1280, 720);
+
+	// 軸方向表示の表示を有効にする
+	KamataEngine::AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
+	KamataEngine::AxisIndicator::GetInstance()->SetTargetCamera(&camera_);
 
 }
 
-void GameScene::Update() { player_->Update(); }
+void GameScene::Update() { 
+	player_->Update();
+	debugCamera_->Update();
+    
+#ifdef _DEBUG
+
+	    if (input_->TriggerKey(DIK_SPACE)) {
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+#endif
+
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		camera_.matView = debugCamera_->GetCamera().matView;
+		camera_.matProjection = debugCamera_->GetCamera().matProjection;
+		camera_.TransferMatrix();
+
+	} else {
+	    camera_.UpdateMatrix();
+	}
+
+
+}
 
 void GameScene::Draw() {
 
@@ -43,7 +69,7 @@ void GameScene::Draw() {
 	Sprite::PreDraw(commandList);
 	Sprite::PostDraw();
 	dxCommon_->ClearDepthBuffer();
-	Model::PreDraw(commandList);
+	KamataEngine::Model::PreDraw(commandList);
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
@@ -52,7 +78,7 @@ void GameScene::Draw() {
 	 
 	/// </summary>
 	
-	Model::PostDraw();
+	KamataEngine::Model::PostDraw();
 	Sprite::PreDraw(commandList);
 	Sprite::PostDraw();
 }
