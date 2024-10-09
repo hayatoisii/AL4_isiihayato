@@ -25,6 +25,8 @@ private:
 	
 	Camera* camera_ = nullptr;
 
+	Model* modelbullet_ = nullptr;
+
 	// 弾
 	PlayerBullet* bullet_ = nullptr;
 

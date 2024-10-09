@@ -6,8 +6,6 @@ void PlayerBullet::Initialize(KamataEngine::Model* model, const KamataEngine::Ve
 	
 	assert(model);
 	model_ = model;
-	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("sample.png");
 	worldtransfrom_.translation_ = position;
 	worldtransfrom_.Initialize();
 

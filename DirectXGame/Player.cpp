@@ -7,22 +7,12 @@ Player::~Player() {
 	camera_ = nullptr;
 }
 
-void Player::Attack() {
-
-	if (/*/発射キーをトリガーしたら/*/) {
-	
-		// 弾を生成し、初期化
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, )
-	}
-
-}
-
 void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos) {
 
 	assert(model);
 	model_ = model;
 	camera_ = camera;
+	modelbullet_ = KamataEngine::Model::CreateFromOBJ("cube", true);
 	worldtransfrom_.translation_ = pos;
 	input_ = Input::GetInstance();
 	worldtransfrom_.Initialize();
@@ -69,6 +59,14 @@ void Player::Update() {
 	worldtransfrom_.translation_.x = std::clamp(worldtransfrom_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldtransfrom_.translation_.y = std::clamp(worldtransfrom_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
+	// キャラクターの攻撃処理
+	Attack();
+
+	// 弾更新
+	if (bullet_) {
+		bullet_->Update();
+	}
+
 	ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
@@ -78,8 +76,29 @@ void Player::Update() {
 
 }
 
+void Player::Attack() {
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		Vector3 moveBullet = {0, 0, 0};
+
+		moveBullet = worldtransfrom_.translation_;
+
+		// 弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(modelbullet_, moveBullet);
+
+		// 弾を登録する
+		bullet_ = newBullet;
+	}
+}
+
 void Player::Draw() { 
 
 	model_->Draw(worldtransfrom_, *camera_);
 
+	// 弾描画
+	if (bullet_) {
+		bullet_->Draw(*camera_);
+	}
 }
