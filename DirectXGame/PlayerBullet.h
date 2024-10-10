@@ -5,7 +5,7 @@
 class PlayerBullet {
 public:
 
-	void Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position);
+	void Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position, const KamataEngine::Vector3& velocity);
 
 	void Update();
 
@@ -13,12 +13,22 @@ public:
 
 	~PlayerBullet();
 
+	bool IsDead() const { return isDead_; }
+
 private:
 
 	KamataEngine::WorldTransform worldtransfrom_;
 
 	KamataEngine::Model* model_ = nullptr;
 
-	uint32_t textureHandle_ = 0; 
+	//uint32_t textureHandle_ = 0; 
 
+	KamataEngine::Vector3 velocity_;
+
+	// 寿命<frm>
+	static const int32_t kLifeTime = 60 * 3;
+	// デスタイマー
+	int32_t deathTimer_ = kLifeTime;
+	// デスフラグ
+	bool isDead_ = false;
 };

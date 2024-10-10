@@ -1,15 +1,16 @@
 #pragma once
 #include "PlayerBullet.h"
 #include <list>
+#include <3d/Model.h>
+#include <3d/Camera.h>
 #include <KamataEngine.h>
-using namespace KamataEngine;
 
 namespace KamataEngine { class Input; };
 
 
 class Player {
 public:
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& pos);
 	void Update();
 	void Draw();
 	~Player();
@@ -18,15 +19,15 @@ public:
 
 private:
 	
-	WorldTransform worldtransfrom_;
+	KamataEngine::WorldTransform worldtransfrom_;
 
-	Model* model_ = nullptr;
+	KamataEngine::Model* model_ = nullptr;
 
-	Input* input_ = nullptr;
+	KamataEngine::Input* input_ = nullptr;
 	
-	Camera* camera_ = nullptr;
+	KamataEngine::Camera* camera_ = nullptr;
 
-	Model* modelbullet_ = nullptr;
+	KamataEngine::Model* modelbullet_ = nullptr;
 
 	// 弾
 	std::list<PlayerBullet*> bullets_;

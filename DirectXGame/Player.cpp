@@ -11,21 +11,63 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos) {
+void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& pos) {
 
 	assert(model);
 	model_ = model;
 	camera_ = camera;
 	modelbullet_ = KamataEngine::Model::CreateFromOBJ("cube", true);
 	worldtransfrom_.translation_ = pos;
-	input_ = Input::GetInstance();
+	input_ = KamataEngine::Input::GetInstance();
 	worldtransfrom_.Initialize();
 
 }
 
+void Player::Attack() {
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		KamataEngine::Vector3 moveBullet = {0,0,0};
+
+		moveBullet = worldtransfrom_.translation_;
+
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		KamataEngine::Vector3 velocity(0, 0, kBulletSpeed);
+
+		// 速度ベクトルを自機の向きに合わせて回転させる
+		velocity = KamataEngine::MathUtility::TransformNormal(velocity, worldtransfrom_.matWorld_);
+
+		// 弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(modelbullet_, moveBullet, velocity);
+
+		// 弾を登録する
+		bullets_.push_back(newBullet);
+	}
+}
+
 void Player::Update() {
+
+	// キャラクターの攻撃処理
+	Attack();
+
+	// 弾更新
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
+	// デスフラグの立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	// キャラクターの移動ベクトル
-	Vector3 move = {0, 0, 0};
+	KamataEngine::Vector3 move = {0, 0, 0};
 
 	// キャラクターの移動速さ
 	const float kCharacterSpeed = 0.3f;
@@ -63,14 +105,6 @@ void Player::Update() {
 	worldtransfrom_.translation_.x = std::clamp(worldtransfrom_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldtransfrom_.translation_.y = std::clamp(worldtransfrom_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
-	// キャラクターの攻撃処理
-	Attack();
-
-	// 弾更新
-	for (PlayerBullet* bullet : bullets_) {
-		bullet->Update();
-	}
-
 	ImGui::Begin("Setmove");
 	ImGui::SliderFloat("Move X", &worldtransfrom_.translation_.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Move Y", &worldtransfrom_.translation_.y, -1.0f, 1.0f);
@@ -78,23 +112,6 @@ void Player::Update() {
 
 	worldtransfrom_.UpdateMatarix();
 
-}
-
-void Player::Attack() {
-
-	if (input_->TriggerKey(DIK_SPACE)) {
-
-		Vector3 moveBullet = {0, 0, 0};
-
-		moveBullet = worldtransfrom_.translation_;
-
-		// 弾を生成し、初期化
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(modelbullet_, moveBullet);
-
-		// 弾を登録する
-		bullets_.push_back(newBullet);
-	}
 }
 
 void Player::Draw() { 
