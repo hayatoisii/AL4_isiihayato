@@ -24,6 +24,8 @@ public:
 	KamataEngine::Vector3 GetWorldPosition();
 
 	void SetPlayer(Player* player) { player_ = player; }
+	// 衝突を検知したら呼び出されるコールバック関数
+	void OnCollision();
 
 	// 発射間隔
 	static const int kFireInterval = 60;

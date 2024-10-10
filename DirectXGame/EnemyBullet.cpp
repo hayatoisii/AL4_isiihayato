@@ -3,6 +3,8 @@
 
 EnemyBullet::~EnemyBullet() { model_ = nullptr; }
 
+void EnemyBullet::OnCollision() {}
+
 void EnemyBullet::Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position, const KamataEngine::Vector3& velocity) {
 	assert(model);
 	model_ = model;

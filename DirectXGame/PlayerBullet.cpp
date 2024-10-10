@@ -3,8 +3,9 @@
 #include "base/TextureManager.h"
 
 PlayerBullet::~PlayerBullet() { 
-	model_ = nullptr;
-}
+	model_ = nullptr; }
+
+void PlayerBullet::OnCollision() {}
 
 void PlayerBullet::Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position, const KamataEngine::Vector3& velocity) {
 
