@@ -5,9 +5,20 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete modelPlayer_;
-	delete player_;
-	delete debugCamera_;
+	if (modelPlayer_) {
+		delete modelPlayer_;
+		modelPlayer_ = nullptr;
+	}
+
+	if (player_) {
+		delete player_;
+		player_ = nullptr;
+	}
+
+	if (debugCamera_) {
+		delete debugCamera_;
+		debugCamera_ = nullptr;
+	}
 }
 
 void GameScene::Initialize() {
