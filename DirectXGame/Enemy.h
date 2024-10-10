@@ -20,7 +20,6 @@ public:
 	void Draw();
 	~Enemy();
 	void Fire();
-	//void Bulletaccess();
 
 	KamataEngine::Vector3 GetWorldPosition();
 
