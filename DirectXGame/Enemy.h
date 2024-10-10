@@ -3,6 +3,9 @@
 #include <3d/WorldTransform.h>
 #include <3d/Camera.h>
 #include "EnemyBullet.h"
+#include "MT.h"
+
+class Player;
 
 enum class Phase {
 	Approach, // 接近する
@@ -17,7 +20,11 @@ public:
 	void Draw();
 	~Enemy();
 	void Fire();
-	void Bulletaccess();
+	//void Bulletaccess();
+
+	KamataEngine::Vector3 GetWorldPosition();
+
+	void SetPlayer(Player* player) { player_ = player; }
 
 	// 発射間隔
 	static const int kFireInterval = 60;
@@ -35,6 +42,8 @@ private:
 
 	// 発射タイマー
 	int32_t spawnTimer = 0;
+
+	Player* player_ = nullptr;
 
 	Phase phase_ = Phase::Approach;
 

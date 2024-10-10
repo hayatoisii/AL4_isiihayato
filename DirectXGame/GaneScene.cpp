@@ -38,6 +38,9 @@ void GameScene::Initialize() {
 	// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	KamataEngine::AxisIndicator::GetInstance()->SetTargetCamera(&camera_);
 
+	// 敵キャラに自キャラのアドレスを渡す
+	enemy_->SetPlayer(player_);
+
 }
 
 void GameScene::Update() { 

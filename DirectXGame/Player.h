@@ -14,8 +14,9 @@ public:
 	void Update();
 	void Draw();
 	~Player();
-
 	void Attack();
+
+	KamataEngine::Vector3 GetWorldPosition(); 
 
 private:
 	

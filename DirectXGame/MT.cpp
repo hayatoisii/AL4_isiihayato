@@ -51,6 +51,17 @@ Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return m3;
 }
 
+Vector3 Normalize(const Vector3& v) {
+
+		float len = KamataEngine::MathUtility::Length(v);
+		Vector3 v2 = {};
+		v2.x = v.x / len;
+		v2.y = v.y / len;
+		v2.z = v.z / len;
+
+		return v2;
+}
+
 Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
 	Matrix4x4 m = {};
 	m.m[0][0] = scale.x;
