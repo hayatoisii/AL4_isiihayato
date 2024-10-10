@@ -22,7 +22,7 @@ private:
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 	Vector3 playerPos = {};
-	Vector3 enemyPos = {};
+	Vector3 enemyPos = {0, 3, 10};
 
 	Model* modelPlayer_ = nullptr;
 	Model* modelEnemy_ = nullptr;
