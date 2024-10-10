@@ -47,6 +47,8 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnCollision() {}
+
 // ワールド座標を取得
 KamataEngine::Vector3 Player::GetWorldPosition() { 
 
