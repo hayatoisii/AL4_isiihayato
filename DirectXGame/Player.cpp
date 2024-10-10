@@ -3,9 +3,9 @@
 #include <algorithm>
 
 Player::~Player() {
-	model_ = nullptr;
-	camera_ = nullptr;
-	modelbullet_ = nullptr;
+	//model_ = nullptr;
+	//camera_ = nullptr;
+	delete modelbullet_;
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
