@@ -6,7 +6,9 @@ Player::~Player() {
 	model_ = nullptr;
 	camera_ = nullptr;
 	modelbullet_ = nullptr;
-	bullet_ = nullptr;
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
 }
 
 void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos) {
@@ -65,8 +67,8 @@ void Player::Update() {
 	Attack();
 
 	// 弾更新
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	ImGui::Begin("Setmove");
@@ -82,11 +84,6 @@ void Player::Attack() {
 
 	if (input_->TriggerKey(DIK_SPACE)) {
 
-		if (bullet_) {
-			delete bullet_;
-			bullet_ = nullptr;
-		}
-
 		Vector3 moveBullet = {0, 0, 0};
 
 		moveBullet = worldtransfrom_.translation_;
@@ -96,7 +93,7 @@ void Player::Attack() {
 		newBullet->Initialize(modelbullet_, moveBullet);
 
 		// 弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
@@ -105,7 +102,7 @@ void Player::Draw() {
 	model_->Draw(worldtransfrom_, *camera_);
 
 	// 弾描画
-	if (bullet_) {
-		bullet_->Draw(*camera_);
+	for (PlayerBullet* bullet : bullets_) {
+	bullet->Draw(*camera_);
 	}
 }
