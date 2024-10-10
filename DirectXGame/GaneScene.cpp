@@ -6,7 +6,9 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete modelPlayer_;
+	delete modelEnemy_;
 	delete player_;
+	delete enemy_;
 	delete debugCamera_;
 }
 
@@ -17,14 +19,17 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	player_ = new Player();
+	enemy_ = new Enemy();
 	// 3Dモデルの生成
 	modelPlayer_ = KamataEngine::Model::CreateFromOBJ("cube", true);
+	modelEnemy_ = KamataEngine::Model::CreateFromOBJ("cube", true);
 
 	// ビュープロジェクションの初期化
 	camera_.Initialize();
 
 	//playerPos.z = 0; 
 	player_->Initialize(modelPlayer_, &camera_, playerPos);
+	enemy_->Initialize(modelEnemy_, &camera_, enemyPos);
 
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -37,6 +42,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() { 
 	player_->Update();
+	enemy_->Update();
 	debugCamera_->Update();
     
 #ifdef _DEBUG
@@ -74,6 +80,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	
 	player_->Draw(); 
+	enemy_->Draw();
 	 
 	/// </summary>
 	

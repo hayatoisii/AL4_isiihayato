@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h" 
 #include "Player.h"
+#include "Enemy.h"
 using namespace KamataEngine;
 
 class GameScene {
@@ -19,9 +20,12 @@ private:
 	Audio* audio_ = nullptr;
 
 	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
 	Vector3 playerPos = {};
+	Vector3 enemyPos = {};
 
 	Model* modelPlayer_ = nullptr;
+	Model* modelEnemy_ = nullptr;
 
 	//std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	Camera camera_;
