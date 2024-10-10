@@ -11,6 +11,8 @@ public:
 
 	void Draw(const KamataEngine::Camera& camera);
 
+	~PlayerBullet();
+
 private:
 
 	KamataEngine::WorldTransform worldtransfrom_;

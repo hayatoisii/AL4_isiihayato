@@ -5,6 +5,8 @@
 Player::~Player() {
 	model_ = nullptr;
 	camera_ = nullptr;
+	modelbullet_ = nullptr;
+	bullet_ = nullptr;
 }
 
 void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const Vector3& pos) {
@@ -79,6 +81,11 @@ void Player::Update() {
 void Player::Attack() {
 
 	if (input_->TriggerKey(DIK_SPACE)) {
+
+		if (bullet_) {
+			delete bullet_;
+			bullet_ = nullptr;
+		}
 
 		Vector3 moveBullet = {0, 0, 0};
 

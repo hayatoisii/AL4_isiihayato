@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerBullet.h"
+#include <list>
 #include <KamataEngine.h>
 using namespace KamataEngine;
 
@@ -28,6 +29,7 @@ private:
 	Model* modelbullet_ = nullptr;
 
 	// 弾
-	PlayerBullet* bullet_ = nullptr;
+	//PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 
 };
